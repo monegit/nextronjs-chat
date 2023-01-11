@@ -12,7 +12,7 @@
 ### Master Feature
 * [ ] sign up
 * [ ] login
-  * [ ] login session maintaining
+  * [ ] login session maintenance
 * [ ] user list
 * [ ] 1:1 chatting room
 * [ ] 1:n chatting room
