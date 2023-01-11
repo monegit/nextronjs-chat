@@ -1,6 +1,6 @@
 # nextronjs-chat
 
-## Used Skill List
+### Used Skill List
 ```
 1. nextron.js (with react.js)
 2. typescript
@@ -9,7 +9,7 @@
 5. framer-motion
 ```
 
-## Master Feature
+### Master Feature
 * [ ] sign up
 * [ ] login
 * [ ] user list
