@@ -1,6 +1,7 @@
-import { app } from "electron";
 import serve from "electron-serve";
 import { createWindow } from "./helpers";
+import electron, { app, ipcMain } from "electron";
+import { registry } from "./data/user/registry";
 
 const isProd: boolean = process.env.NODE_ENV === "production";
 
@@ -29,4 +30,10 @@ if (isProd) {
 
 app.on("window-all-closed", () => {
   app.quit();
+});
+
+ipcMain.on("data/user/registry", (event, res) => {
+  // console.log(res);
+  registry(res.email, res.password);
+  // event.sender.send("renderer-test1", "hello");
 });

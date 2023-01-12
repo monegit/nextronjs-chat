@@ -1,9 +1,11 @@
+import { ipcRenderer } from "electron";
 import React, { useRef, useState } from "react";
 import { useModalStore } from "../../../store/modal";
 import UserInput from "../../input/userInput";
 import Button from "../../login/button";
 
 function Registry() {
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordCheck, setPasswordCheck] = useState("");
 
@@ -13,7 +15,12 @@ function Registry() {
         <div className="flex relative left-3 items-center">
           <TitleText content="Email" />
         </div>
-        <UserInput email />
+        <UserInput
+          email
+          onKeyUp={(e) => {
+            setEmail(e.currentTarget.value);
+          }}
+        />
       </div>
       <div className="flex flex-col gap-1">
         <div className="flex relative left-3 items-center">
@@ -44,7 +51,18 @@ function Registry() {
         <Descript content="Password and password check must be the same" />
       </div>
       <div className="flex flex-col gap-2">
-        <Button content={"Sign up"} />
+        <Button
+          content={"Sign up"}
+          onClick={() => {
+            ipcRenderer.send("data/user/registry", {
+              email: email,
+              password: password,
+            });
+            // ipcRenderer.on("renderer-test1", (event, res) => {
+            //   console.log(res);
+            // });
+          }}
+        />
         <Button
           content={"Cancel"}
           backgroundColor="bg-rose-500"
