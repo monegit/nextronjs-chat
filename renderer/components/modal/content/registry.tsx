@@ -54,11 +54,11 @@ function Registry() {
         <Button
           content={"Sign up"}
           onClick={() => {
-            ipcRenderer.send("data/user/registry", {
+            ipcRenderer.send("data/user/registry:client", {
               email: email,
               password: password,
             });
-            ipcRenderer.on("renderer-test1", (event, res) => {
+            ipcRenderer.on("data/user/registry:server", (event, res) => {
               console.log(res);
             });
           }}

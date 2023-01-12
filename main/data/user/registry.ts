@@ -1,18 +1,16 @@
-import { firebaseAuth } from "../firebase";
+import { auth } from "../firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import { ErrorData, FirebaseError } from "@firebase/util";
 
-export function registry(email: string, password: string) {
-  createUserWithEmailAndPassword(firebaseAuth, email, password)
+export async function registry(email: string, password: string) {
+  let message: string;
+  await createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
-      // Signed in
-      const user = userCredential.user;
-      // console.log(user);
-
-      // ...
+      message = userCredential.user.uid;
     })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      // ..
+    .catch((error: FirebaseError) => {
+      message = error.code;
     });
+
+  return message;
 }

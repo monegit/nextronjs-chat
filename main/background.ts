@@ -2,6 +2,7 @@ import serve from "electron-serve";
 import { createWindow } from "./helpers";
 import electron, { app, ipcMain } from "electron";
 import { registry } from "./data/user/registry";
+import { login } from "./data/user/login";
 
 const isProd: boolean = process.env.NODE_ENV === "production";
 
@@ -32,8 +33,16 @@ app.on("window-all-closed", () => {
   app.quit();
 });
 
-ipcMain.on("data/user/registry", (event, res) => {
-  // console.log(res);
-  registry(res.email, res.password);
-  // event.sender.send("renderer-test1", "hello");
+ipcMain.on("data/user/registry:client", async (event, res) => {
+  event.sender.send(
+    "data/user/registry:server",
+    await registry(res.email, res.password)
+  );
+});
+
+ipcMain.on("data/user/login:client", async (event, res) => {
+  event.sender.send(
+    "data/user/login:server",
+    await login(res.email, res.password)
+  );
 });
