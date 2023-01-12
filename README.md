@@ -1,12 +1,12 @@
 # nextronjs-chat
 
-### Used Tool
+### Used Tools
 ```
 1. Visual Studio Code
 2. firebase
 ```
 
-### Used Skills List
+### Used Skills
 ```
 1. nextron.js (with react.js)
 2. typescript
