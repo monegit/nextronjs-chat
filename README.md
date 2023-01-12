@@ -13,6 +13,7 @@
 3. firebase
 4. tailwindcss
 5. framer-motion
+6. zustand
 ```
 
 ### Master Feature

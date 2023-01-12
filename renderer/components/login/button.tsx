@@ -1,5 +1,5 @@
 import React from "react";
-import { motion, useAnimation } from "framer-motion";
+import { AnimatePresence, motion, useAnimation } from "framer-motion";
 
 interface Props {
   content: string;
@@ -9,17 +9,18 @@ interface Props {
 }
 
 function Button(props: Props) {
-  const buttonAnimation = useAnimation();
   return (
-    <motion.button
-      className={`${props.backgroundColor ?? "bg-emerald-500"} ${
-        props.textColor ?? "text-white"
-      } font-bold text-base rounded-lg p-1`}
-      onClick={props.onClick}
-      whileHover={{ scale: 1.05, transition: { duration: 0.1 } }}
-    >
-      {props.content}
-    </motion.button>
+    <AnimatePresence>
+      <motion.button
+        className={`${props.backgroundColor ?? "bg-emerald-500"} ${
+          props.textColor ?? "text-white"
+        } font-bold text-base rounded-lg p-1 select-none`}
+        onClick={props.onClick}
+        whileHover={{ scale: 1.05, transition: { duration: 0.1 } }}
+      >
+        {props.content}
+      </motion.button>
+    </AnimatePresence>
   );
 }
 
