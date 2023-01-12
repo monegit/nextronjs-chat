@@ -25,7 +25,7 @@ function Registry() {
       <div className="flex flex-col gap-1">
         <div className="flex relative left-3 items-center">
           <TitleText content="Password" />
-          {password !== "" && password.length <= 10 ? (
+          {password !== "" && password.length <= 6 ? (
             <Descript content="password too short" fontColor="text-rose-500" />
           ) : password !== passwordCheck ? (
             <Descript content="password different" fontColor="text-rose-500" />
@@ -58,9 +58,9 @@ function Registry() {
               email: email,
               password: password,
             });
-            // ipcRenderer.on("renderer-test1", (event, res) => {
-            //   console.log(res);
-            // });
+            ipcRenderer.on("renderer-test1", (event, res) => {
+              console.log(res);
+            });
           }}
         />
         <Button
