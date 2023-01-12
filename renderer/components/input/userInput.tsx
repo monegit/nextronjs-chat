@@ -11,7 +11,7 @@ interface Props {
 function UserInput(props: Props) {
   const inputAnimation = useAnimation();
   const emailRegex = /[a-zA-Z0-9\-_]+@[a-zA-Z0-9]+\.[a-zA-Z]+/;
-  const passwordRegex = /[a-zA-Z0-9]{10,}/;
+  const passwordRegex = /[a-zA-Z0-9]{6,}/;
 
   return (
     <motion.input
@@ -35,7 +35,7 @@ function UserInput(props: Props) {
         if (value === "") {
           inputAnimation.start({
             backgroundColor: "rgb(226, 232, 240)",
-            color: "black",
+            color: "rgb(0, 0, 0)",
             transition: { duration: 0.15 },
           });
           return;
@@ -46,13 +46,13 @@ function UserInput(props: Props) {
           if (emailRegex.test(value)) {
             inputAnimation.start({
               backgroundColor: "rgb(16, 185, 129)",
-              color: "white",
+              color: "rgb(255, 255, 255)",
               transition: { duration: 0.15 },
             });
           } else {
             inputAnimation.start({
               backgroundColor: "rgb(226, 232, 240)",
-              color: "black",
+              color: "rgb(0, 0, 0)",
               transition: { duration: 0.15 },
             });
           }
@@ -63,13 +63,13 @@ function UserInput(props: Props) {
           if (passwordRegex.test(value)) {
             inputAnimation.start({
               backgroundColor: "rgb(16, 185, 129)",
-              color: "white",
+              color: "rgb(255, 255, 255)",
               transition: { duration: 0.15 },
             });
           } else {
             inputAnimation.start({
               backgroundColor: "rgb(226, 232, 240)",
-              color: "black",
+              color: "rgb(0, 0, 0)",
               transition: { duration: 0.15 },
             });
           }
