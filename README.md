@@ -3,17 +3,16 @@
 ### Used Tool
 ```
 1. Visual Studio Code
+2. firebase
 ```
 
 ### Used Skills List
 ```
-- Used Skills
 1. nextron.js (with react.js)
 2. typescript
-3. firebase
-4. tailwindcss
-5. framer-motion
-6. zustand
+3. tailwindcss
+4. framer-motion
+5. zustand
 ```
 
 ### Master Feature
