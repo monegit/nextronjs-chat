@@ -10,7 +10,9 @@ function Registry() {
   return (
     <div className="grid gap-5">
       <div className="flex flex-col gap-1">
-        <TitleText content="Email" />
+        <div className="flex relative left-3 items-center">
+          <TitleText content="Email" />
+        </div>
         <UserInput email />
       </div>
       <div className="flex flex-col gap-1">
