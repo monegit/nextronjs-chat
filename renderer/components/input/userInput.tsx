@@ -11,7 +11,7 @@ interface Props {
 function UserInput(props: Props) {
   const inputAnimation = useAnimation();
   const [isEmail, setIsEmail] = useState(false);
-  const emailRegex = /[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z]+/;
+  const emailRegex = /[a-zA-Z0-9\-_]+@[a-zA-Z0-9]+\.[a-zA-Z]+/;
 
   return (
     <motion.input
