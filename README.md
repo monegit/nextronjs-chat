@@ -5,8 +5,9 @@
 1. Visual Studio Code
 ```
 
-### Used Skill List
+### Used Skills List
 ```
+- Used Skills
 1. nextron.js (with react.js)
 2. typescript
 3. firebase
@@ -21,3 +22,10 @@
 * [ ] user list
 * [ ] 1:1 chatting room
 * [ ] 1:n chatting room
+
+### How to run
+```
+1. open this project in IDE or code editor
+2. open terminal and enter 'npm i'
+3. enter 'npm run dev' terminal
+```
