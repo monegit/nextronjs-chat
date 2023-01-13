@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { motion, useAnimation } from "framer-motion";
+import { AnimationControls, motion, useAnimation } from "framer-motion";
 
 interface Props {
   placeholder?: string;
@@ -7,6 +7,18 @@ interface Props {
   email?: true;
   onKeyUp?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
+
+const isTrueAnimation = {
+  backgroundColor: "rgb(16, 185, 129)",
+  color: "rgb(255, 255, 255)",
+  transition: { duration: 0.15 },
+};
+
+const isFalseAnimation = {
+  backgroundColor: "rgb(226, 232, 240)",
+  color: "rgb(0, 0, 0)",
+  transition: { duration: 0.15 },
+};
 
 function UserInput(props: Props) {
   const inputAnimation = useAnimation();
@@ -33,45 +45,25 @@ function UserInput(props: Props) {
         let value = e.target.value;
 
         if (value === "") {
-          inputAnimation.start({
-            backgroundColor: "rgb(226, 232, 240)",
-            color: "rgb(0, 0, 0)",
-            transition: { duration: 0.15 },
-          });
+          inputAnimation.start(isFalseAnimation);
           return;
         }
 
         // email test
         if (props.email) {
           if (emailRegex.test(value)) {
-            inputAnimation.start({
-              backgroundColor: "rgb(16, 185, 129)",
-              color: "rgb(255, 255, 255)",
-              transition: { duration: 0.15 },
-            });
+            inputAnimation.start(isTrueAnimation);
           } else {
-            inputAnimation.start({
-              backgroundColor: "rgb(226, 232, 240)",
-              color: "rgb(0, 0, 0)",
-              transition: { duration: 0.15 },
-            });
+            inputAnimation.start(isFalseAnimation);
           }
         }
 
         // password test
         if (props.password) {
           if (passwordRegex.test(value)) {
-            inputAnimation.start({
-              backgroundColor: "rgb(16, 185, 129)",
-              color: "rgb(255, 255, 255)",
-              transition: { duration: 0.15 },
-            });
+            inputAnimation.start(isTrueAnimation);
           } else {
-            inputAnimation.start({
-              backgroundColor: "rgb(226, 232, 240)",
-              color: "rgb(0, 0, 0)",
-              transition: { duration: 0.15 },
-            });
+            inputAnimation.start(isFalseAnimation);
           }
         }
       }}
