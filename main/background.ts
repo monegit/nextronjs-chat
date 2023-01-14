@@ -36,7 +36,7 @@ app.on("window-all-closed", () => {
 ipcMain.on("data/user/registry:client", async (event, res) => {
   event.sender.send(
     "data/user/registry:server",
-    await registry(res.email, res.password)
+    await registry(res.email, res.password, res.name, res.birth)
   );
 });
 

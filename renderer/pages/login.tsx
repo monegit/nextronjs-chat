@@ -1,6 +1,6 @@
 import React, { ReactElement, useState } from "react";
 import { motion } from "framer-motion";
-import UserInput from "../components/input/userInput";
+import UserInput, { SizeType } from "../components/input/userInput";
 import Button from "../components/login/button";
 import CheckBox from "../components/login/checkBox";
 import Modal from "../components/modal/modal";
@@ -21,12 +21,14 @@ function login() {
         />
         <UserInput
           email
+          sizeType={SizeType.Fixed}
           onKeyUp={(e) => {
             setEmail(e.currentTarget.value);
           }}
         />
         <UserInput
           password
+          sizeType={SizeType.Fixed}
           onKeyUp={(e) => {
             setPassword(e.currentTarget.value);
           }}

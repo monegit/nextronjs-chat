@@ -1,24 +1,41 @@
 import { ipcRenderer } from "electron";
 import React, { useRef, useState } from "react";
+import { useAlertStore } from "../../../store/alert";
 import { useModalStore } from "../../../store/modal";
-import UserInput from "../../input/userInput";
+import UserInput, {
+  emailRegex,
+  passwordRegex,
+  SizeType,
+} from "../../input/userInput";
 import Button from "../../login/button";
+import { motion, useAnimation } from "framer-motion";
+import { onHide, onVisible } from "../../animations/body";
+import { useRegistyStore } from "../../../store/registry";
 
 function Registry() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  return <AccountPanel />;
+}
+
+const AccountPanel = () => {
+  const { email, password } = useRegistyStore();
   const [passwordCheck, setPasswordCheck] = useState("");
+  const bodyAnimation = useAnimation();
 
   return (
-    <div className="grid gap-5">
+    <motion.div
+      animate={bodyAnimation}
+      className="gap-5"
+      initial={{ display: "grid" }}
+    >
       <div className="flex flex-col gap-1">
         <div className="flex relative left-3 items-center">
           <TitleText content="Email" />
         </div>
         <UserInput
           email
+          sizeType={SizeType.Fixed}
           onKeyUp={(e) => {
-            setEmail(e.currentTarget.value);
+            useRegistyStore.setState({ email: e.currentTarget.value });
           }}
         />
       </div>
@@ -36,12 +53,14 @@ function Registry() {
         <div className="flex flex-col gap-2">
           <UserInput
             password
+            sizeType={SizeType.Fixed}
             onKeyUp={(e) => {
-              setPassword(e.currentTarget.value);
+              useRegistyStore.setState({ password: e.currentTarget.value });
             }}
           />
           <UserInput
             password
+            sizeType={SizeType.Fixed}
             placeholder="password check"
             onKeyUp={(e) => {
               setPasswordCheck(e.currentTarget.value);
@@ -52,15 +71,22 @@ function Registry() {
       </div>
       <div className="flex flex-col gap-2">
         <Button
-          content={"Sign up"}
+          content={"Next"}
           onClick={() => {
-            ipcRenderer.send("data/user/registry:client", {
-              email: email,
-              password: password,
-            });
-            ipcRenderer.on("data/user/registry:server", (event, res) => {
-              console.log(res);
-            });
+            if (
+              emailRegex.test(email) &&
+              passwordRegex.test(password) &&
+              password === passwordCheck
+            ) {
+              onHide(bodyAnimation).then(() => {
+                useModalStore.setState({ content: <DetailPanel /> });
+              });
+            } else {
+              useAlertStore.setState({
+                isVisible: true,
+                content: "Please enter your email or password correctly",
+              });
+            }
           }}
         />
         <Button
@@ -71,9 +97,124 @@ function Registry() {
           }}
         />
       </div>
-    </div>
+    </motion.div>
   );
-}
+};
+
+const DetailPanel = () => {
+  const bodyAnimation = useAnimation();
+  const { email, password, birth, name } = useRegistyStore();
+
+  return (
+    <motion.div
+      animate={bodyAnimation}
+      className="gap-5"
+      initial={{ display: "grid" }}
+      onLoad={() => {
+        onVisible(bodyAnimation);
+      }}
+    >
+      <div className="flex flex-col gap-1">
+        <div className="flex relative left-3 items-center">
+          <TitleText content="Name" />
+        </div>
+        <UserInput
+          placeholder="First Name"
+          sizeType={SizeType.Fixed}
+          onKeyUp={(e) => {
+            useRegistyStore.setState({
+              name: {
+                firstName: e.currentTarget.value,
+                lastName: name.lastName,
+              },
+            });
+          }}
+        />
+        <UserInput
+          placeholder="Last Name"
+          sizeType={SizeType.Fixed}
+          onKeyUp={(e) => {
+            useRegistyStore.setState({
+              name: {
+                firstName: name.firstName,
+                lastName: e.currentTarget.value,
+              },
+            });
+          }}
+        />
+      </div>
+      <div className="flex flex-col gap-1">
+        <div className="flex relative left-3 items-center">
+          <TitleText content="Birth" />
+        </div>
+        <div className="grid grid-flow-col grid-cols-3 justify-items-center gap-2">
+          <div className="w-[100px]">
+            <UserInput
+              isTextAlignCenter
+              placeholder="YYYY"
+              sizeType={SizeType.Auto}
+              onKeyUp={(e) => {
+                useRegistyStore.setState({
+                  birth: {
+                    year: Number(e.currentTarget.value),
+                    month: birth.month,
+                    day: birth.day,
+                  },
+                });
+              }}
+            />
+          </div>
+          <div className="w-[100px]">
+            <UserInput
+              isTextAlignCenter
+              placeholder="MM"
+              sizeType={SizeType.Auto}
+              onKeyUp={(e) => {
+                useRegistyStore.setState({
+                  birth: {
+                    year: birth.year,
+                    month: Number(e.currentTarget.value),
+                    day: birth.day,
+                  },
+                });
+              }}
+            />
+          </div>
+          <div className="w-[100px]">
+            <UserInput
+              isTextAlignCenter
+              placeholder="DD"
+              sizeType={SizeType.Auto}
+              onKeyUp={(e) => {
+                useRegistyStore.setState({
+                  birth: {
+                    year: birth.year,
+                    month: birth.month,
+                    day: Number(e.currentTarget.value),
+                  },
+                });
+              }}
+            />
+          </div>
+        </div>
+      </div>
+      <Button
+        content={"Sign up"}
+        onClick={() => {
+          ipcRenderer.send("data/user/registry:client", {
+            email: email,
+            password: password,
+            birth: birth,
+            name: name,
+          });
+          ipcRenderer.on("data/user/registry:server", (event, res) => {
+            console.log(res);
+          });
+        }}
+      />
+    </motion.div>
+  );
+};
 
 const TitleText = (props: { content: string }) => {
   return <span className="text-lg font-bold">{props.content}</span>;

@@ -40,7 +40,7 @@ function Alert(props: { content: string }) {
       className="grid absolute w-full z-50"
     >
       <motion.div
-        className="grid relative z-10 bg-white place-self-center p-2 max-w-xl w-full m-5 rounded-xl shadow-lg border border-slate-200 font-bold text-center"
+        className="grid relative z-10 bg-white text-slate-600 place-self-center p-2 max-w-xl w-full m-5 rounded-xl shadow-lg border border-slate-200 font-semibold text-center"
         initial={{ top: -10 }}
       >
         {props.content}

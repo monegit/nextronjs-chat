@@ -1,11 +1,18 @@
-import React, { useState } from "react";
-import { AnimationControls, motion, useAnimation } from "framer-motion";
+import React, { useEffect, useLayoutEffect, useState } from "react";
+import { motion, useAnimation } from "framer-motion";
 
-interface Props {
+interface UserInputProps {
   placeholder?: string;
   password?: true;
   email?: true;
   onKeyUp?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+  sizeType?: SizeType;
+  isTextAlignCenter?: true;
+}
+
+export enum SizeType {
+  Auto,
+  Fixed,
 }
 
 const isTrueAnimation = {
@@ -20,16 +27,30 @@ const isFalseAnimation = {
   transition: { duration: 0.15 },
 };
 
-function UserInput(props: Props) {
+export const emailRegex = /[a-zA-Z0-9\-_]+@[a-zA-Z0-9]+\.[a-zA-Z]+/;
+export const passwordRegex = /[a-zA-Z0-9]{6,}/;
+
+function UserInput(props: UserInputProps) {
   const inputAnimation = useAnimation();
-  const emailRegex = /[a-zA-Z0-9\-_]+@[a-zA-Z0-9]+\.[a-zA-Z]+/;
-  const passwordRegex = /[a-zA-Z0-9]{6,}/;
+  const [width, setWidth] = useState("");
+
+  useEffect(() => {
+    setWidth(
+      props.sizeType === SizeType.Fixed
+        ? "w-80"
+        : props.sizeType === SizeType.Auto
+        ? "w-full"
+        : "w-80"
+    );
+  }, [props.sizeType]);
 
   return (
     <motion.input
       animate={inputAnimation}
       type={props.password ? "password" : ""}
-      className="outline-none bg-slate-200 rounded-xl w-80 h-12 p-4"
+      className={`outline-none bg-slate-200 rounded-xl ${width} h-12 p-4 ${
+        props.isTextAlignCenter ? "text-center" : ""
+      }`}
       placeholder={
         props.placeholder ??
         (props.email ? "abcde@homepage.com" : props.password ? "password" : "")
