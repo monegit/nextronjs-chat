@@ -2,16 +2,13 @@ import { auth, firebase } from "../firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { ErrorData, FirebaseError } from "@firebase/util";
 import { addDoc, collection } from "firebase/firestore";
+import { Birth, Name } from "../dto/user";
 
-interface Name {
-  firstName: string;
-  lastName: string;
-}
-
-interface Birth {
-  year: number;
-  month: number;
-  day: number;
+interface RegistryData {
+  email: string;
+  password: string;
+  name: Name;
+  birth: Birth;
 }
 
 export async function registry(

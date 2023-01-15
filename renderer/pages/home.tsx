@@ -10,13 +10,6 @@ function Home() {
         <title>Home - Nextron (with-typescript)</title>
       </Head>
       <div>
-        {/* <p>
-          ⚡ Electron + Next.js ⚡ -
-          <Link href="/next">
-            <a>Go to next page</a>
-          </Link>
-        </p>
-        <img src="/images/logo.png" /> */}
         <Login />
       </div>
     </React.Fragment>

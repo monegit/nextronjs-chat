@@ -1,16 +1,19 @@
-import React, { ReactElement, useState } from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import UserInput, { SizeType } from "../components/input/userInput";
 import Button from "../components/login/button";
-import CheckBox from "../components/login/checkBox";
-import Modal from "../components/modal/modal";
 import { useModalStore } from "../store/modal";
 import Registry from "../components/modal/content/registry";
 import { ipcRenderer } from "electron";
+import { useUserStore } from "../store/user";
+import { useRouter } from "next/router";
+import { UserData } from "../data/dto/user";
+import { useAlertStore } from "../store/alert";
 
 function login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const router = useRouter();
 
   return (
     <React.Fragment>
@@ -54,9 +57,32 @@ function login() {
                 email: email,
                 password: password,
               });
-              ipcRenderer.on("data/user/login:server", (event, res) => {
-                console.log(res);
-              });
+              ipcRenderer.on(
+                "data/user/login:server",
+                (
+                  event,
+                  res: { code: string; message: string; user?: UserData }
+                ) => {
+                  switch (res.code) {
+                    case "ok":
+                      useUserStore.setState({
+                        name: res.user.name,
+                        birth: res.user.birth,
+                        uid: res.user.uid,
+                      });
+                      router.push("/main");
+                      break;
+                    case "auth/user-not-found":
+                    case "auth/wrong-password":
+                      useAlertStore.setState({
+                        isVisible: true,
+                        content: "Email or password do not match",
+                      });
+                      break;
+                  }
+                  console.log(res);
+                }
+              );
             }}
           />
         </div>
