@@ -16,8 +16,8 @@
 ```
 
 ### Master Feature
-* [ ] sign up
-* [ ] login
+* [x] sign up
+* [x] login
   * [ ] ~~login session maintenance~~
 * [ ] user list
 * [ ] 1:1 chatting room
