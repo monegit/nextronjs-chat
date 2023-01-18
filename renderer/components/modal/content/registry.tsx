@@ -201,14 +201,20 @@ const DetailPanel = () => {
       <Button
         content={"Sign up"}
         onClick={() => {
-          ipcRenderer.send("data/user/registry:client", {
+          ipcRenderer.send("data/user/registry", {
             email: email,
             password: password,
             birth: birth,
             name: name,
           });
-          ipcRenderer.on("data/user/registry:server", (event, res) => {
-            console.log(res);
+          ipcRenderer.on("data/user/registry", (event, res) => {
+            switch (res) {
+              case "auth/email-already-in-use":
+                useAlertStore.setState({
+                  isVisible: true,
+                  content: "This email is already in use.",
+                });
+            }
           });
         }}
       />

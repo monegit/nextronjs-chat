@@ -11,7 +11,7 @@ interface RegistryData {
   birth: Birth;
 }
 
-export async function registry(
+export default async function tryRegistry(
   email: string,
   password: string,
   name: Name,

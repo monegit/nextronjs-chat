@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { motion } from "framer-motion";
+import React, { useEffect, useState } from "react";
+import { motion, useAnimation } from "framer-motion";
 import UserInput, { SizeType } from "../components/input/userInput";
 import Button from "../components/login/button";
 import { useModalStore } from "../store/modal";
@@ -53,12 +53,12 @@ function login() {
           <Button
             content="Login"
             onClick={() => {
-              ipcRenderer.send("data/user/login:client", {
+              ipcRenderer.send("data/user/login", {
                 email: email,
                 password: password,
               });
               ipcRenderer.on(
-                "data/user/login:server",
+                "data/user/login",
                 (
                   event,
                   res: { code: string; message: string; user?: UserData }
@@ -70,6 +70,7 @@ function login() {
                         birth: res.user.birth,
                         uid: res.user.uid,
                       });
+
                       router.push("/main");
                       break;
                     case "auth/user-not-found":
@@ -79,8 +80,13 @@ function login() {
                         content: "Email or password do not match",
                       });
                       break;
+                    case "auth/uid-not-found":
+                    default:
+                      useAlertStore.setState({
+                        isVisible: true,
+                        content: "unknown error",
+                      });
                   }
-                  console.log(res);
                 }
               );
             }}

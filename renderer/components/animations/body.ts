@@ -1,4 +1,6 @@
 import { AnimationControls } from "framer-motion";
+import { useEffect } from "react";
+import { useAlertStore } from "../../store/alert";
 
 export function onHide(animate: AnimationControls) {
   return animate
@@ -12,7 +14,7 @@ export function onHide(animate: AnimationControls) {
 }
 export function onVisible(animate: AnimationControls) {
   animate.set({ opacity: 0 });
-  animate.start({
+  return animate.start({
     opacity: 1,
     transition: { duration: 0.2 },
   });

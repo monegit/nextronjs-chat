@@ -1,8 +1,9 @@
 import serve from "electron-serve";
 import { createWindow } from "./helpers";
 import electron, { app, ipcMain } from "electron";
-import { registry } from "./data/user/registry";
-import { login } from "./data/user/login";
+import tryLogin from "./data/user/login";
+import tryRegistry from "./data/user/registry";
+import getUserList from "./data/user/userList";
 
 const isProd: boolean = process.env.NODE_ENV === "production";
 
@@ -33,16 +34,17 @@ app.on("window-all-closed", () => {
   app.quit();
 });
 
-ipcMain.on("data/user/registry:client", async (event, res) => {
+ipcMain.on("data/user/registry", async (event, res) => {
   event.sender.send(
-    "data/user/registry:server",
-    await registry(res.email, res.password, res.name, res.birth)
+    "data/user/registry",
+    await tryRegistry(res.email, res.password, res.name, res.birth)
   );
 });
 
-ipcMain.on("data/user/login:client", async (event, res) => {
-  event.sender.send(
-    "data/user/login:server",
-    await login(res.email, res.password)
-  );
+ipcMain.on("data/user/login", async (event, res) => {
+  event.sender.send("data/user/login", await tryLogin(res.email, res.password));
+});
+
+ipcMain.on("data/user/list", async (event, res) => {
+  event.sender.send("data/user/list", await getUserList());
 });
