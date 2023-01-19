@@ -10,6 +10,7 @@ import { useUserStore } from "../../store/user";
 function Chat() {
   const router = useRouter();
   const [messages, setMessages] = useState<ChatData[]>([]);
+  const inputRef = useRef<HTMLInputElement>(null);
   const messageRef = useRef("");
   const { uid, name } = useUserStore();
 
@@ -49,8 +50,20 @@ function Chat() {
         <div className="flex gap-1">
           <input
             className="w-full outline-none bg-slate-100 rounded-lg p-2 text-lg"
+            ref={inputRef}
             onChange={(e) => {
               messageRef.current = e.target.value;
+            }}
+            onKeyDown={async (e) => {
+              if (e.key === "Enter") {
+                const { message } = await MessageService.sendChannelMessage(
+                  uid,
+                  messageRef.current,
+                  name
+                );
+                setMessages([...messages]);
+                inputRef.current.value = "";
+              }
             }}
           />
           <button
@@ -62,6 +75,7 @@ function Chat() {
                 name
               );
               setMessages([...messages]);
+              inputRef.current.value = "";
             }}
           >
             send
