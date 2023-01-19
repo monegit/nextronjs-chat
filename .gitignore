@@ -3,5 +3,3 @@ node_modules
 .next
 app
 dist
-main/config/firebase.json
-main/config/token.json
