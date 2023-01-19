@@ -2,18 +2,19 @@ import React, { ReactElement, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/router";
 import { ipcRenderer } from "electron";
-import { UserData } from "../data/dto/user";
+import { UserData } from "../libs/dto/user";
 import UerItem from "../components/main/userItem";
 import Head from "next/head";
-import Chat from "./chat/[uid]";
 import { useModalStore } from "../store/modal";
+import { useUserStore } from "../store/user";
 
 function Main() {
   const router = useRouter();
   const [userList, setUserList] = useState<ReactElement[]>([]);
+  const { uid, name } = useUserStore();
 
   useEffect(() => {
-    ipcRenderer.send("data/user/list");
+    ipcRenderer.send("data/user/list", { uid: uid });
     ipcRenderer.on("data/user/list", (event, res: UserData[]) => {
       setUserList(
         res.map((value, index) => (
@@ -24,6 +25,7 @@ function Main() {
               lastName: value.name.lastName,
             }}
             uid={value.uid}
+            docId={value.docId}
           />
         ))
       );
@@ -46,33 +48,34 @@ function Main() {
               }}
             ></div>
             <span className="self-center text-sm font-semibold">
-              jongwon park
+              {name.firstName} {name.lastName}
             </span>
           </div>
           <img
             src="/images/logo.png"
             className="w-10 h-10 justify-self-center"
           />
-          <div className="justify-self-end self-center font-bold text-sm">
+          <button
+            className="justify-self-end self-center font-bold text-sm"
+            onClick={() => {
+              router.back();
+            }}
+          >
             Logout
-          </div>
+          </button>
         </div>
-        <div className="flex flex-col h-screen">{userList}</div>
-        {/* <div className="rounded-lg bg-slate-200 p-2">Hello, </div>
-        <div className="flex w-full h-full gap-2">
-          <div className="flex flex-col bg-slate-200 rounded-lg p-2">
-            <span className="font-bold text-lg">
-              User List <span className="text-xs">({userList.length})</span>
-            </span>
-            <div className="flex flex-col gap-1 mt-1 items-center">
-              {userList}
-            </div>
-          </div>
-          <div className="bg-slate-50 w-full h-full p-2 rounded-lg">
-            <input></input>
-          </div>
+        <div className="flex flex-col h-screen">
+          <UerItem
+            key={-1}
+            name={{
+              firstName: "channel chat",
+              lastName: "",
+            }}
+            uid={""}
+            docId={""}
+          />
+          {userList}
         </div>
-        <button onClick={router.back}>aa</button> */}
       </motion.div>
     </React.Fragment>
   );

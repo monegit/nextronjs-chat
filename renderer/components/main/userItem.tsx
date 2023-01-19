@@ -1,11 +1,13 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { Name } from "../../data/dto/user";
+import { Name } from "../../libs/dto/user";
 import { useRouter } from "next/router";
+import { useMessageStore } from "../../store/message";
 
 interface UserItemProps {
   name: Name;
   uid: string;
+  docId: string;
 }
 
 function UerItem(props: UserItemProps) {
@@ -20,7 +22,8 @@ function UerItem(props: UserItemProps) {
         transition: { duration: 0.05 },
       }}
       onClick={() => {
-        router.push(`/chat/${props.name.firstName}`);
+        useMessageStore.setState({ messageDocId: props.docId });
+        router.push(`/messages/${props.name.firstName} ${props.name.lastName}`);
       }}
     >
       {props.name.firstName} {props.name.lastName}

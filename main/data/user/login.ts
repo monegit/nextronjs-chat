@@ -3,7 +3,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { collection, getDocs } from "firebase/firestore";
 import { useRouter } from "next/router";
 import { Birth, Name, UserData } from "../dto/user";
-import { auth, firebase } from "../firebase";
+import { auth, _firebase } from "../firebase";
 
 interface LoginData {
   code: string;
@@ -16,7 +16,7 @@ export default async function tryLogin(email: string, password: string) {
 
   await signInWithEmailAndPassword(auth, email, password)
     .then(async (userCredential) => {
-      (await getDocs(collection(firebase, "users"))).forEach((doc) => {
+      (await getDocs(collection(_firebase, "users"))).forEach((doc) => {
         if (userCredential.user.uid === doc.data().uid)
           message = {
             code: "ok",
@@ -31,8 +31,8 @@ export default async function tryLogin(email: string, password: string) {
                 month: doc.data().birth.month,
                 day: doc.data().birth.day,
               },
-
               uid: doc.data().uid,
+              docId: doc.id,
             },
           };
       });

@@ -7,7 +7,7 @@ import Registry from "../components/modal/content/registry";
 import { ipcRenderer } from "electron";
 import { useUserStore } from "../store/user";
 import { useRouter } from "next/router";
-import { UserData } from "../data/dto/user";
+import { UserData } from "../libs/dto/user";
 import { useAlertStore } from "../store/alert";
 
 function login() {
@@ -37,9 +37,6 @@ function login() {
           }}
         />
         <div className="grid grid-flow-col gap-2 text-sm items-center">
-          {/* <div className="grid justify-items-center">
-            <CheckBox />
-          </div> */}
           <Button
             content="Sign up"
             backgroundColor="bg-sky-500"
@@ -69,6 +66,7 @@ function login() {
                         name: res.user.name,
                         birth: res.user.birth,
                         uid: res.user.uid,
+                        docId: res.user.docId,
                       });
 
                       router.push("/main");

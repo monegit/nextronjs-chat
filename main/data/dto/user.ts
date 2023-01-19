@@ -13,4 +13,5 @@ export interface UserData {
   name: Name;
   birth: Birth;
   uid: string;
+  docId?: string;
 }

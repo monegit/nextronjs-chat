@@ -215,6 +215,7 @@ const DetailPanel = () => {
                   content: "This email is already in use.",
                 });
             }
+            console.log(res);
           });
         }}
       />

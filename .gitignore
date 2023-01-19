@@ -4,3 +4,4 @@ node_modules
 app
 dist
 main/config/firebase.json
+main/config/token.json

@@ -1,15 +1,8 @@
-import { auth, firebase } from "../firebase";
+import { auth, _firebase } from "../firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { ErrorData, FirebaseError } from "@firebase/util";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, doc } from "firebase/firestore";
 import { Birth, Name } from "../dto/user";
-
-interface RegistryData {
-  email: string;
-  password: string;
-  name: Name;
-  birth: Birth;
-}
 
 export default async function tryRegistry(
   email: string,
@@ -34,10 +27,11 @@ export default async function tryRegistry(
 
 async function applyInfo(uid: string, name: Name, birth: Birth) {
   try {
-    const docRef = await addDoc(collection(firebase, "users"), {
+    const docRef = await addDoc(collection(_firebase, "users"), {
       uid: uid,
       name: name,
       birth: birth,
+      messageRoom: [],
     });
     console.log("Document written with ID: ", docRef.id);
   } catch (e) {

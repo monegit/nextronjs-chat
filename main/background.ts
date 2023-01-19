@@ -1,9 +1,10 @@
 import serve from "electron-serve";
 import { createWindow } from "./helpers";
 import electron, { app, ipcMain } from "electron";
-import tryLogin from "./data/user/login";
 import tryRegistry from "./data/user/registry";
 import getUserList from "./data/user/userList";
+import { createChannelMessages, getChannelMessages } from "./data/chat/chat";
+import tryLogin from "./data/user/login";
 
 const isProd: boolean = process.env.NODE_ENV === "production";
 
@@ -46,5 +47,16 @@ ipcMain.on("data/user/login", async (event, res) => {
 });
 
 ipcMain.on("data/user/list", async (event, res) => {
-  event.sender.send("data/user/list", await getUserList());
+  event.sender.send("data/user/list", await getUserList(res.uid));
+});
+
+ipcMain.on("data/createChannelMessages", async (event, res) => {
+  event.sender.send(
+    "data/createChannelMessages",
+    await createChannelMessages(res.uid, res.text)
+  );
+});
+
+ipcMain.on("data/getChannelMessages", async (event, res) => {
+  event.sender.send("data/getChannelMessages", await getChannelMessages());
 });
