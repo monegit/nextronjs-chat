@@ -11,12 +11,15 @@ import Button from "../../login/button";
 import { motion, useAnimation } from "framer-motion";
 import { onHide, onVisible } from "../../animations/body";
 import { useRegistyStore } from "../../../store/registry";
+import { useUserStore } from "../../../store/user";
+import { useRouter } from "next/router";
 
 function Registry() {
   return <AccountPanel />;
 }
 
 const AccountPanel = () => {
+  const router = useRouter();
   const { email, password } = useRegistyStore();
   const [passwordCheck, setPasswordCheck] = useState("");
   const bodyAnimation = useAnimation();
@@ -103,6 +106,7 @@ const AccountPanel = () => {
 
 const DetailPanel = () => {
   const bodyAnimation = useAnimation();
+  const router = useRouter();
   const { email, password, birth, name } = useRegistyStore();
 
   return (
@@ -214,6 +218,19 @@ const DetailPanel = () => {
                   isVisible: true,
                   content: "This email is already in use.",
                 });
+                break;
+              case "ok":
+                useUserStore.setState({
+                  name: { firstName: name.firstName, lastName: name.lastName },
+                  birth: {
+                    year: birth.year,
+                    month: birth.month,
+                    day: birth.day,
+                  },
+                });
+                useModalStore.setState({ isVisible: false });
+                router.push("/main");
+                break;
             }
             console.log(res);
           });

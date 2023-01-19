@@ -14,7 +14,7 @@ export default async function tryRegistry(
 
   await createUserWithEmailAndPassword(auth, email, password)
     .then(async (userCredential) => {
-      message = userCredential.user.uid;
+      message = "ok";
 
       applyInfo(userCredential.user.uid, name, birth);
     })
